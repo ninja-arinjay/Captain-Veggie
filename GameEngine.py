@@ -18,6 +18,10 @@ class GameEngine:
         self.__score = 0  # To store the score
 
     def initVeggies(self):
+        """
+        The field 2D List is populated with NUMBEROFVEGGIES number of new Veggie objects,
+        located at random locations in the field
+        """
         while True:
             try:
                 # Prompt user for the veggie file name
@@ -62,8 +66,11 @@ class GameEngine:
                 print(f"An error occurred: {e}")
 
     def initCaptain(self):
-        rows = len(self.__field)
-        cols = len(self.__field[0])
+        """
+        A random location is chosen for the Captain object
+        """
+        rows = len(self.field)
+        cols = len(self.field[0])
 
         while True:
             # Choose a random location for the Captain object
@@ -80,7 +87,10 @@ class GameEngine:
                 break  # Exit the loop if a valid location is found
 
     def initRabbits(self):
-        rows, cols = len(self.__field), len(self.__field[0])
+        """
+        For NUMBEROFRABBITS, a random location is chosen for a Rabbit object
+        """
+        rows, cols = len(self.field), len(self.field[0])
 
         for _ in range(self.__NUMBEROFRABBITS):
             while True:
@@ -103,10 +113,17 @@ class GameEngine:
         self.initRabbits()
 
     def remainingVeggies(self):
-        print(sum(1 for row in self.__field for item in row if isinstance(item, Veggie)))
-        return sum(1 for row in self.__field for item in row if isinstance(item, Veggie))
+        """
+        This function examines the 'field'
+        :return: The number of vegetables still in the game
+        """
+        return sum(1 for row in self.field for item in row if isinstance(item, Veggie))
 
     def intro(self):
+        """
+        In this function, player is welcomed to the game, goal of game is explained, and lists out possible vegetables including
+        vegetables name, symbol and points.
+        """
         print("Welcome to Captain Veggie!")
 
         print("The rabbits have invaded your garden and you must harvest " +
@@ -123,8 +140,12 @@ class GameEngine:
         print("\nGood Luck!")
 
     def printField(self):
-        width = len(self.__field[0])
-        height = len(self.__field)
+        """
+        In this function,the contents of the field are output in a pleasing 2D grid format with a border around the
+        entire grid
+        """
+        width = len(self.field[0])
+        height = len(self.field)
 
         # Print top border
         print("#" * (width * 2 + 3))
@@ -144,7 +165,11 @@ class GameEngine:
         print("#" * (width * 2 + 3))
 
     def getScore(self):
-        return self.__score
+        """
+        :return: The current score
+        """
+        return self.score
+
     
     def moveRabbits(self):
         """

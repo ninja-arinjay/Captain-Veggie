@@ -172,7 +172,7 @@ class GameEngine:
 
                 # To check index bounds
                 if new_x < 0 or new_x >= len(self.__field) or new_y < 0 or new_y >= len(self.__field[0]):
-                    print("Rabbit cannot move")
+                    # print("Rabbit cannot move")
                     continue
 
                 # Forfeit rabbit movement if a captain or a rabbit is already present at new location
@@ -257,7 +257,7 @@ class GameEngine:
             veggie = self.__field[x][y]
             print(f"Delicious vegetable found: {veggie.get_name()}!")
             self.__captain.addVeggie(veggie)
-            self.__score += veggie.get_points()
+            self.__score += int(veggie.get_points())
             self.update_captain_veggie(x, y)
 
         # Forfeits move if rabbit present at new location
@@ -269,7 +269,8 @@ class GameEngine:
         """
         Function that prompts user for a direction to move captain veggie
         """
-        direction = input("Would you like to move up(W), down(S), left(A), or right(D): ").upper()
+
+        direction = input("\nEnter direction to move the Captain (W/A/S/D): ").upper()
 
         if direction == 'W':
             self.moveCptVertical(-1)
@@ -309,6 +310,12 @@ class GameEngine:
         # create a tuple with the player;s initials and score
         player_score = (initials, self.__score)
 
+        # ask user for their initials
+        initials = input("Please enter your three initials to go on the scoreboard:").upper()[:3]
+    
+        # create a tuple with the player;s initials and score
+        player_score = (initials, self.__score)
+
         # add player;s score to the high scores list
         high_scores.append(player_score)
         # sort the list in descending order
@@ -318,6 +325,11 @@ class GameEngine:
         print("\nName\tScore")
         for score in high_scores:
             print(f"{score[0]}\t\t\t{score[1]}")
+    
+        print("\nHIGH SCORES")
+        print("\nName\tScore")
+        for score in high_scores:
+            print(f"{score[0]}      {score[1]}")
 
         with open(GameEngine.__HIGHSCOREFILE, 'wb') as file:
             pickle.dump(high_scores, file)

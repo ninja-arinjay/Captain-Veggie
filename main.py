@@ -21,13 +21,13 @@ def main():
         # Moves the rabbits in 8 directions randomly
         game_engine.moveRabbits()
 
-        #Moves captain in as per user input( up(W), down(S), left(A), right(D))
+        # Moves captain in as per user input( up(W), down(S), left(A), right(D))
         game_engine.moveCaptain()
 
-        #Updates remaining veggies
+        # Updates remaining veggies
         remaining_veggies = game_engine.remainingVeggies()
-    
-    #Informs user that the game is over
+
+    # Informs user that the game is over
     game_engine.gameOver()
 
     # rest of the function calls

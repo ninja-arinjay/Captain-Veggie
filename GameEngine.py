@@ -18,6 +18,10 @@ class GameEngine:
         self.score = 0  # To store the score
 
     def initVeggies(self):
+        """
+        The field 2D List is populated with NUMBEROFVEGGIES number of new Veggie objects,
+        located at random locations in the field
+        """
         while True:
             file_name = input("Please enter the name of the vegetable point file: ")
             if os.path.exists(file_name):
@@ -42,6 +46,9 @@ class GameEngine:
                     break
 
     def initCaptain(self):
+        """
+        A random location is chosen for the Captain object
+        """
         rows = len(self.field)
         cols = len(self.field[0])
 
@@ -60,6 +67,9 @@ class GameEngine:
                 break  # Exit the loop if a valid location is found
 
     def initRabbits(self):
+        """
+        For NUMBEROFRABBITS, a random location is chosen for a Rabbit object
+        """
         rows, cols = len(self.field), len(self.field[0])
 
         for _ in range(self.__NUMBEROFRABBITS):
@@ -83,9 +93,17 @@ class GameEngine:
         self.initRabbits()
 
     def remainingVeggies(self):
+        """
+        This function examines the 'field'
+        :return: The number of vegetables still in the game
+        """
         return sum(1 for row in self.field for item in row if isinstance(item, Veggie))
 
     def intro(self):
+        """
+        In this function, player is welcomed to the game, goal of game is explained, and lists out possible vegetables including
+        vegetables name, symbol and points.
+        """
         print("Welcome to Captain Veggie!")
 
         print("The rabbits have invaded your garden and you must harvest " +
@@ -102,6 +120,10 @@ class GameEngine:
         print("\nGood Luck!")
 
     def printField(self):
+        """
+        In this function,the contents of the field are output in a pleasing 2D grid format with a border around the
+        entire grid
+        """
         width = len(self.field[0])
         height = len(self.field)
 
@@ -123,5 +145,8 @@ class GameEngine:
         print("#" * (width * 2 + 3))
 
     def getScore(self):
+        """
+        :return: The current score
+        """
         return self.score
 

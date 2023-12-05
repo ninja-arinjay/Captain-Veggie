@@ -20,7 +20,7 @@ class GameEngine:
     def initVeggies(self):
         """
         The field 2D List is populated with NUMBEROFVEGGIES number of new Veggie objects,
-        located at random locations in the field
+        located at random locations in the field.
         """
         while True:
             file_name = input("Please enter the name of the vegetable point file: ")

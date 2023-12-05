@@ -30,7 +30,8 @@ def main():
     # Informs user that the game is over
     game_engine.gameOver()
 
-    # rest of the function calls
+    # Function to keep track of highscore
+    game_engine.highScore()
 
 
 if __name__ == "__main__":

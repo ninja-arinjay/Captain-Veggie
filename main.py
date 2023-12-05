@@ -14,7 +14,7 @@ def main():
     # loop, below. Please remove this when below While loop is defined properly
 
     while remaining_veggies > 0:
-        print(f"{remaining_veggies} veggies remaining. \nPlayer's score: {game_engine.getScore()}")
+        print(f"\n{remaining_veggies} veggies remaining. \nPlayer's score: {game_engine.getScore()}")
         # calls the function that prints the field
         game_engine.printField()
 

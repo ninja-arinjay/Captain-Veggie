@@ -20,57 +20,37 @@ class GameEngine:
     def initVeggies(self):
         """
         The field 2D List is populated with NUMBEROFVEGGIES number of new Veggie objects,
-        located at random locations in the field
+        located at random locations in the field.
         """
         while True:
-            try:
-                # Prompt user for the veggie file name
-                veggie_file_name = input("Please enter the name of the vegetable point file: ")
-                # if os.path.exists(veggie_file_name):
-                #     break
-                # print(f"{veggie_file_name} does not exist! Please enter the name of the vegetable point file: ")
+            file_name = input("Please enter the name of the vegetable point file: ")
+            if os.path.exists(file_name):
+                break
+            print(f"{file_name} does not exist! Please enter the name of the vegetable point file: ")
 
-                # Open the veggie file
-                with open(veggie_file_name, 'r') as file:
-                    # Read the first line to initialize the field size
-                    field_size = file.readline().strip().split(',')
+        with open(file_name, 'r') as file:
+            field_size = file.readline().strip().split(',')
+            rows, cols = int(field_size[1]), int(field_size[2])
+            self.__field = [[None for _ in range(cols)] for _ in range(rows)]
 
-                    rows = int(field_size[1])
-                    cols = int(field_size[2])
-                    self.__field = [[None for _ in range(cols)] for _ in range(rows)]
+            for line in file:
+                veggie_name, veggie_symbol, veggie_points = line.strip().split(',')
+                new_veggie = Veggie(veggie_name, veggie_symbol, veggie_points)
+                self.possible_veggies.append(new_veggie)
 
-                    # Read the remaining lines to create a new Veggie object
-                    for line in file:
-                        veggie_info = line.strip().split(',')
-                        
-                        veggie_name = veggie_info[0]
-                        veggie_symbol = veggie_info[1]
-                        veggie_points = int(veggie_info[2])
-
-                        # create new Veggie object that are added to the List of possible vegetables
-                        new_veggie = Veggie(veggie_name, veggie_symbol, veggie_points)
-                        self.possible_veggies.append(new_veggie)
-
-                        # Place the Veggie object at a random location in the field
-                        for _ in range(self.__NUMBEROFVEGGIES):
-                            x, y = random.randint(0, rows - 1), random.randint(0, cols - 1)
-                            if self.__field[x][y] is None:
-                                x, y = random.randint(0, rows - 1), random.randint(0, cols - 1)
-
-                            self.__field[x][y] = random.choice(self.possible_veggies)
-
-                break  # Exit the loop if file reading is successful
-            except FileNotFoundError:
-                print(f"{veggie_file_name} does not exist! Please enter the name of the vegetable point file: ")
-            except Exception as e:
-                print(f"An error occurred: {e}")
+        for _ in range(GameEngine.__NUMBEROFVEGGIES):
+            while True:
+                x, y = random.randint(0, rows - 1), random.randint(0, cols - 1)
+                if self.__field[x][y] is None:
+                    self.__field[x][y] = random.choice(self.possible_veggies)
+                    break
 
     def initCaptain(self):
         """
         A random location is chosen for the Captain object
         """
-        rows = len(self.field)
-        cols = len(self.field[0])
+        rows = len(self.__field)
+        cols = len(self.__field[0])
 
         while True:
             # Choose a random location for the Captain object
@@ -90,7 +70,7 @@ class GameEngine:
         """
         For NUMBEROFRABBITS, a random location is chosen for a Rabbit object
         """
-        rows, cols = len(self.field), len(self.field[0])
+        rows, cols = len(self.__field), len(self.__field[0])
 
         for _ in range(self.__NUMBEROFRABBITS):
             while True:
@@ -108,6 +88,9 @@ class GameEngine:
                     break  # Exit the loop if a valid location is found
 
     def initializeGame(self):
+        """
+        This calls the init functions for veggies, captain and rabbits
+        """
         self.initVeggies()
         self.initCaptain()
         self.initRabbits()
@@ -117,7 +100,7 @@ class GameEngine:
         This function examines the 'field'
         :return: The number of vegetables still in the game
         """
-        return sum(1 for row in self.field for item in row if isinstance(item, Veggie))
+        return sum(1 for row in self.__field for item in row if isinstance(item, Veggie))
 
     def intro(self):
         """
@@ -144,8 +127,8 @@ class GameEngine:
         In this function,the contents of the field are output in a pleasing 2D grid format with a border around the
         entire grid
         """
-        width = len(self.field[0])
-        height = len(self.field)
+        width = len(self.__field[0])
+        height = len(self.__field)
 
         # Print top border
         print("#" * (width * 2 + 3))
@@ -168,63 +151,61 @@ class GameEngine:
         """
         :return: The current score
         """
-        return self.score
+        return self.__score
 
-    
     def moveRabbits(self):
         """
         Function to randomize the hopping pattern of 5 rabbits to eat more veggies
         
         """
-        rabbit_hop = [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)] # possible hopping pattern
+        rabbit_hop = [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)]  # possible hopping pattern
 
-        #Loop to parse through all the rabbits and update there position
+        # Loop to parse through all the rabbits and update there position
         for rabbit in self.__rabbits:
             if rabbit is not None:
                 row, col = random.choice(rabbit_hop)
 
-                #Get new location for a rabbit
-                new_x , new_y = rabbit.get_x() + row, rabbit.get_y() + col
+                # Get new location for a rabbit
+                new_x, new_y = rabbit.get_x() + row, rabbit.get_y() + col
                 # print("Pos", new_x, new_y)
                 # print(len(self.__field), len(self.__field[0]))
 
-                #To check index bounds
-                if new_x<0 or new_x>=len(self.__field) or new_y<0 or new_y>= len(self.__field[0]):
+                # To check index bounds
+                if new_x < 0 or new_x >= len(self.__field) or new_y < 0 or new_y >= len(self.__field[0]):
                     print("Rabbit cannot move")
                     continue
-                
-                #Forfeit rabbit movement if a captain or a rabbit is already present at new location
+
+                # Forfeit rabbit movement if a captain or a rabbit is already present at new location
                 elif isinstance(self.__field[new_x][new_y], Rabbit) or isinstance(self.__field[new_x][new_y], Captain):
                     # print("Don't step on bunnies or captain")
                     pass
 
-                #Update location of bunnies if new location is empty or the bunny eats the veggies
+                # Update location of bunnies if new location is empty or the bunny eats the veggies
                 else:
                     self.__field[new_x][new_y] = rabbit
                     self.__field[rabbit.get_x()][rabbit.get_y()] = None
                     rabbit.set_x(new_x)
                     rabbit.set_y(new_y)
 
-
     def moveCptVertical(self, movement):
         """
         Tracks the movement of captain veggie in the vertical axis
         """
-        curr_x, curr_y = self.__captain.get_x(), self.__captain.get_y() #get the current location of Captain
+        curr_x, curr_y = self.__captain.get_x(), self.__captain.get_y()  # get the current location of Captain
 
-        #create new location  using the direction chosen by the user(W,A,S,D)
+        # create new location  using the direction chosen by the user(W,A,S,D)
         new_x, new_y = curr_x + movement, curr_y
         # print(new_x, new_y)
 
-        #Check whether captain can be moved to new location
+        # Check whether captain can be moved to new location
         if not self.is_valid_move(new_x, new_y):
             print("Invalid move. Try another direction.")
 
-        #Simply update new location of captain
+        # Simply update new location of captain
         elif self.is_valid_move(new_x, new_y) and self.__field[new_x][new_y] is None:
             self.update_captain_veggie(new_x, new_y)
 
-        #Harvest veggies, track score and update new location of captain veggie
+        # Harvest veggies, track score and update new location of captain veggie
         else:
             self.found_veggie(new_x, new_y)
 
@@ -234,19 +215,19 @@ class GameEngine:
         """
         curr_x, curr_y = self.__captain.get_x(), self.__captain.get_y()
 
-        #create new location  using the direction chosen by the user(W,A,S,D)
+        # create new location  using the direction chosen by the user(W,A,S,D)
         new_x, new_y = curr_x, curr_y + movement
         # print(new_x, new_y)
 
-        #Check whether captain can be moved to new location
+        # Check whether captain can be moved to new location
         if not self.is_valid_move(new_x, new_y):
             print("Invalid move. Try another direction.")
 
-        #Simply update new location of captain
+        # Simply update new location of captain
         elif self.is_valid_move(new_x, new_y) and self.__field[new_x][new_y] is None:
             self.update_captain_veggie(new_x, new_y)
 
-        #Harvest veggies, track score and update new location of captain veggie
+        # Harvest veggies, track score and update new location of captain veggie
         else:
             self.found_veggie(new_x, new_y)
 
@@ -279,11 +260,9 @@ class GameEngine:
             self.__score += veggie.get_points()
             self.update_captain_veggie(x, y)
 
-        #Forfeits move if rabbit present at new location
+        # Forfeits move if rabbit present at new location
         elif isinstance(self.__field[x][y], Rabbit):
             print("You should not step on the rabbits! Try another direction.")
-
-
 
     def moveCaptain(self):
 
@@ -302,7 +281,6 @@ class GameEngine:
             self.moveCptHorizontal(1)
         else:
             print("Invalid input. Please enter W, A, S, or D.")
-
 
     def gameOver(self):
         """

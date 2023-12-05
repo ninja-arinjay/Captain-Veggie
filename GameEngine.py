@@ -19,46 +19,27 @@ class GameEngine:
 
     def initVeggies(self):
         while True:
-            try:
-                # Prompt user for the veggie file name
-                veggie_file_name = input("Please enter the name of the vegetable point file: ")
-                # if os.path.exists(veggie_file_name):
-                #     break
-                # print(f"{veggie_file_name} does not exist! Please enter the name of the vegetable point file: ")
+            file_name = input("Please enter the name of the vegetable point file: ")
+            if os.path.exists(file_name):
+                break
+            print(f"{file_name} does not exist! Please enter the name of the vegetable point file: ")
 
-                # Open the veggie file
-                with open(veggie_file_name, 'r') as file:
-                    # Read the first line to initialize the field size
-                    field_size = file.readline().strip().split(',')
+        with open(file_name, 'r') as file:
+            field_size = file.readline().strip().split(',')
+            rows, cols = int(field_size[1]), int(field_size[2])
+            self.field = [[None for _ in range(cols)]for _ in range(rows)]
 
-                    rows = int(field_size[1])
-                    cols = int(field_size[2])
-                    self.field = [[None for _ in range(cols)] for _ in range(rows)]
+            for line in file:
+                veggie_name, veggie_symbol,veggie_points = line.strip().split(',')
+                new_veggie = Veggie(veggie_name,veggie_symbol,veggie_points)
+                self.possible_veggies.append(new_veggie)
 
-                    # Read the remaining lines to create a new Veggie object
-                    for line in file:
-                        veggie_info = line.strip().split(',')
-                        veggie_name = veggie_info[0]
-                        veggie_symbol = veggie_info[1]
-                        veggie_points = int(veggie_info[2])
-
-                        # create new Veggie object that are added to the List of possible vegetables
-                        new_veggie = Veggie(veggie_name, veggie_symbol, veggie_points)
-                        self.possible_veggies.append(new_veggie)
-
-                        # Place the Veggie object at a random location in the field
-                        for _ in range(self.__NUMBEROFVEGGIES):
-                            x, y = random.randint(0, rows - 1), random.randint(0, cols - 1)
-                            if self.field[x][y] is None:
-                                x, y = random.randint(0, rows - 1), random.randint(0, cols - 1)
-
-                            self.field[x][y] = random.choice(self.possible_veggies)
-
-                break  # Exit the loop if file reading is successful
-            except FileNotFoundError:
-                print(f"{veggie_file_name} does not exist! Please enter the name of the vegetable point file: ")
-            except Exception as e:
-                print(f"An error occurred: {e}")
+        for _ in range(GameEngine.__NUMBEROFVEGGIES):
+            while True:
+                x,y = random.randint(0, rows - 1), random.randint(0, cols - 1)
+                if self.field[x][y] is None:
+                    self.field[x][y] = random.choice(self.possible_veggies)
+                    break
 
     def initCaptain(self):
         rows = len(self.field)

@@ -88,6 +88,9 @@ class GameEngine:
                     break  # Exit the loop if a valid location is found
 
     def initializeGame(self):
+        """
+        This calls the init functions for veggies, captain and rabbits
+        """
         self.initVeggies()
         self.initCaptain()
         self.initRabbits()

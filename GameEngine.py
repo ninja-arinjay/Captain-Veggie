@@ -1,5 +1,6 @@
 import random
 import os
+import pickle
 from Captain import Captain
 from Rabbit import Rabbit
 from Veggie import Veggie
@@ -127,11 +128,10 @@ class GameEngine:
         In this function,the contents of the field are output in a pleasing 2D grid format with a border around the
         entire grid
         """
-        width = len(self.__field[0])
-        height = len(self.__field)
+        cols = len(self.__field[0])
 
         # Print top border
-        print("#" * (width * 2 + 3))
+        print("#" * (cols * 2 + 3))
 
         for row in self.__field:
             # Start each row with a border character
@@ -145,7 +145,7 @@ class GameEngine:
             print(row_str)
 
         # Print bottom border
-        print("#" * (width * 2 + 3))
+        print("#" * (cols * 2 + 3))
 
     def getScore(self):
         """
@@ -292,7 +292,32 @@ class GameEngine:
         print(f"\nHarvested Veggies: {', '.join(get_veggies)}")
         print(f"\nFinal Score : {self.__score}")
 
-    def highScore(self):
-        """
-        Function that stores the top three scores of the game
-        """
+    # def highScore(self):
+    #     """
+    #     Function that stores the top three scores of the game
+    #     """
+    #     high_scores = []
+    #
+    #     # check if the highscore.data file exists
+    #     if os.path.exists(GameEngine.__HIGHSCOREFILE):
+    #         with open(GameEngine.__HIGHSCOREFILE, 'rb') as file:
+    #             high_scores = pickle.load(file)
+    #
+    #     # ask user for their initials
+    #     initials = input("Please enter your three initials to go on the scoreboard:").upper()[:3]
+    #
+    #     # create a tuple with the player;s initials and score
+    #     player_score = (initials, self.__score)
+    #
+    #     # add player;s score to the high scores list
+    #     high_scores.append(player_score)
+    #     # sort the list in descending order
+    #     high_scores.sort(key=lambda score: score[1], reverse=True)
+    #
+    #     print("\nHIGH SCORES")
+    #     print("\nName\tScore")
+    #     for score in high_scores:
+    #         print(f"{score[0]}: {score[1]}")
+    #
+    #     with open(GameEngine.__HIGHSCOREFILE, 'wb') as file:
+    #         pickle.dump(high_scores, file)

@@ -29,6 +29,7 @@ def main():
 
     # Informs user that the game is over
     game_engine.gameOver()
+    game_engine.highScore()
 
     # rest of the function calls
 

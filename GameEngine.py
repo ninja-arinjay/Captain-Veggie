@@ -269,6 +269,7 @@ class GameEngine:
         """
         Function that prompts user for a direction to move captain veggie
         """
+
         direction = input("\nEnter direction to move the Captain (W/A/S/D): ").upper()
 
         if direction == 'W':
@@ -297,27 +298,27 @@ class GameEngine:
         Function that stores the top three scores of the game
         """
         high_scores = []
-    
+
         # check if the highscore.data file exists
         if os.path.exists(GameEngine.__HIGHSCOREFILE):
             with open(GameEngine.__HIGHSCOREFILE, 'rb') as file:
                 high_scores = pickle.load(file)
-    
+
         # ask user for their initials
         initials = input("Please enter your three initials to go on the scoreboard:").upper()[:3]
-    
+
         # create a tuple with the player;s initials and score
         player_score = (initials, self.__score)
-    
+
         # add player;s score to the high scores list
         high_scores.append(player_score)
         # sort the list in descending order
         high_scores.sort(key=lambda score: score[1], reverse=True)
-    
+
         print("\nHIGH SCORES")
         print("\nName\tScore")
         for score in high_scores:
-            print(f"{score[0]}      {score[1]}")
-    
+            print(f"{score[0]}\t\t\t{score[1]}")
+
         with open(GameEngine.__HIGHSCOREFILE, 'wb') as file:
             pickle.dump(high_scores, file)

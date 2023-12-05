@@ -101,3 +101,46 @@ class GameEngine:
         self.initCaptain()
         self.initRabbits()
 
+    def remainingVeggies(self):
+        return sum(1 for row in self.field for item in row if isinstance(item, Veggie))
+
+    def intro(self):
+        print("Welcome to Captain Veggie!")
+
+        print("The rabbits have invaded your garden and you must harvest " +
+              "as many vegetables as possible before the rabbits eat them " +
+              "all! Each vegetable is worth a different number of points " +
+              "so go for the high score!")
+
+        print("\nThe vegetables are:")
+        for veggie in self.possible_veggies:
+            print(veggie)
+
+        print("\nCaptain Veggie is V, and the rabbits are R's.")
+
+        print("\nGood Luck!")
+
+    def printField(self):
+        width = len(self.field[0])
+        height = len(self.field)
+
+        # Print top border
+        print("#" * (width * 2 + 3))
+
+        for row in self.field:
+            # Start each row with a border character
+            row_str = "# "
+
+            # For each item in the row, if it is None, print a space; otherwise, print the item
+            # print(f"field here is..")
+            row_str += " ".join(str(item.get_symbol()) if item else " " for item in row) + " #"
+
+            # Print the row
+            print(row_str)
+
+        # Print bottom border
+        print("#" * (width * 2 + 3))
+
+    def getScore(self):
+        return self.score
+

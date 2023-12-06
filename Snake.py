@@ -2,7 +2,7 @@ from Creature import Creature
 
 
 class Snake(Creature):
-    def _init_(self, x, y):
+    def __init__(self, x, y):
         super().__init__(x, y, "S")
 
     def get_x(self):

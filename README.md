@@ -31,8 +31,8 @@ The goal is to move Captain Veggie around the field to collect vegetables, scori
 
 ## Contributors
 - Arinjay Panwar
-- Parul Mahajan
-- Suman Mohanty
+- Parul Mahajan (CWID: 20010763)
+- Suman Mohanty (CWID: 20012987)
 
 ## License
 This project is licensed under the [MIT License](LICENSE).

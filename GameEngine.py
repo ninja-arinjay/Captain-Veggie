@@ -316,7 +316,7 @@ class GameEngine:
         high_scores.sort(key=lambda score: score[1], reverse=True)
 
         print("\nHIGH SCORES")
-        print("\nName\tScore")
+        print("\nName\t\tScore")
         for score in high_scores:
             print(f"{score[0]}\t\t\t{score[1]}")
 

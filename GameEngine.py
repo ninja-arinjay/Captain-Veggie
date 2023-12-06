@@ -17,6 +17,7 @@ class GameEngine:
         self.__captain = None  # To store the captain object
         self.possible_veggies = []  # List to represent all possible vegetables in the game
         self.__score = 0  # To store the score
+        self.__snake = None
 
     def initVeggies(self):
         """

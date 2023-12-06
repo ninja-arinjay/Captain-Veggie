@@ -255,7 +255,7 @@ class GameEngine:
         """
         if isinstance(self.__field[x][y], Veggie):
             veggie = self.__field[x][y]
-            print(f"Delicious vegetable found: {veggie.get_name()}!")
+            print(f"Yummy! A delicious {veggie.get_name()}")
             self.__captain.addVeggie(veggie)
             self.__score += int(veggie.get_points())
             self.update_captain_veggie(x, y)
@@ -270,7 +270,7 @@ class GameEngine:
         Function that prompts user for a direction to move captain veggie
         """
 
-        direction = input("\nEnter direction to move the Captain (W/A/S/D): ").upper()
+        direction = input("\nWould you like to move up(W), down(S), left(A), or right(D): ").upper()
 
         if direction == 'W':
             self.moveCptVertical(-1)
@@ -287,11 +287,11 @@ class GameEngine:
         """
         Informs the player that the game is over
         """
-        print("\nGame Over! All the veggies have either been harvested or eaten by rabbits!")
+        print("\nGAME OVER!")
 
         get_veggies = [veg.get_name() for veg in self.__captain.get_veggies_collected()]
-        print(f"\nHarvested Veggies: {', '.join(get_veggies)}")
-        print(f"\nFinal Score : {self.__score}")
+        print(f"You managed to harvest the following vegetables: {', '.join(get_veggies)}")
+        print(f"Your score was: {self.__score}")
 
     def highScore(self):
         """
